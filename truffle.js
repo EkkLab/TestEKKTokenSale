@@ -11,7 +11,7 @@ module.exports = {
     gethTestNet: {
         host: "127.0.0.1",
         port: 8545,
-        gas: 5000000,
+        gas: 50000000,
         network_id: "*"
      },
     ganacheTestNet: {
