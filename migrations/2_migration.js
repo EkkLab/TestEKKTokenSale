@@ -1,5 +1,5 @@
-const EkkTokenv1 = artifacts.require("./EkkTokenv1.sol")
+const EkkTokenv1 = artifacts.require("./EkkToken.sol")
 
 module.exports = function(deployer) {
-	deployer.deploy(EkkTokenv1,1,"BZCOIN2","%BZ",{from:web3.eth.accounts[0], value:1000000000000000000000});
+	deployer.deploy(EkkTokenv1,1,"EkkRewardToken","☐");
 }
