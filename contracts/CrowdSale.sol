@@ -12,6 +12,7 @@ contract CrowdSale {
     uint public deadline;
     uint public price;
     token public tokenReward;
+    uint public bundleSize;
     mapping(address => uint256) public balanceOf;
     bool fundingGoalReached = false;
     bool crowdsaleClosed = false;
@@ -28,14 +29,16 @@ contract CrowdSale {
         address ifSuccessfulSendTo,
         uint fundingGoalInEthers,
         uint durationInMinutes,
-        uint etherCostOfEachToken,
+        uint finneyCostOfEachToken,
+        uint minimalBundleSize,
         address addressOfTokenUsedAsReward
     ) public{
         beneficiary = ifSuccessfulSendTo;
         fundingGoal = fundingGoalInEthers * 1 ether;
         deadline = now + durationInMinutes * 1 minutes;
-        price = etherCostOfEachToken * 1 ether;
+        price = finneyCostOfEachToken * 1 finney;
         tokenReward = token(addressOfTokenUsedAsReward);
+        bundleSize = minimalBundleSize;
     }
 
     /**
@@ -45,6 +48,7 @@ contract CrowdSale {
      */
     function () payable public{
         require(!crowdsaleClosed);
+        require((msg.value / price)  > bundleSize );
         uint amount = msg.value;
         balanceOf[msg.sender] += amount;
         amountRaised += amount;
