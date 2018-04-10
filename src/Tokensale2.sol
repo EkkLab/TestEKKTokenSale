@@ -10,9 +10,11 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
   uint public fundingGoal;
   uint public amountRaised;
   uint public deadline;
-  uint public price;
+  uint256 public price;
   DSToken public tokenReward;
   uint public bundleSize;
+  uint256 public totalSupply;
+
   mapping(address => uint256) public balanceOf;
   bool fundingGoalReached = false;
   bool crowdsaleClosed = false;
@@ -25,24 +27,29 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
   *
   * Setup the owner
   */
-  function CrowdSale(
+  function Tokensale2(
     address ifSuccessfulSendTo,
     uint fundingGoalInEthers,
     uint durationInMinutes,
-    uint finneyCostOfEachToken,
+    uint256 CostOfEachToken,
     uint minimalBundleSize,
-    DSToken addressOfTokenUsedAsReward,
-    uint totalSupply
+    uint256 _totalSupply
     ) public{
       beneficiary = ifSuccessfulSendTo;
       fundingGoal = fundingGoalInEthers * 1 ether;
       deadline = now + durationInMinutes * 1 minutes;
-      price = finneyCostOfEachToken * 1 finney;
-      tokenReward = addressOfTokenUsedAsReward;
+      price = CostOfEachToken;
+      totalSupply = _totalSupply * 1 ether;
       bundleSize = minimalBundleSize;
+    }
+
+    function initialize(DSToken ekkToken) auth {
       assert(address(tokenReward) == address(0));
-      assert(tokenReward.owner() == address(this));
-      assert(tokenReward.totalSupply() == 0);
+      assert(ekkToken.owner() == address(this));
+      //assert(ekkToken.authority() == DSAuthority(0));
+      assert(ekkToken.totalSupply() == 0);
+
+      tokenReward = ekkToken;
       tokenReward.mint(totalSupply);
     }
 
@@ -52,13 +59,13 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
     * The function without name is the default function that is called whenever anyone sends funds to a contract
     */
     function () payable public{
-      require(!crowdsaleClosed);
-      require((msg.value / price)  > bundleSize );
-      uint amount = msg.value;
-      balanceOf[msg.sender] += amount;
-      amountRaised += amount;
-      tokenReward.push(msg.sender, amount / price);
-      emit FundTransfer(msg.sender, amount, true);
+        require(!crowdsaleClosed);
+        require((msg.value / price)  > bundleSize );
+        uint amount = msg.value;
+        balanceOf[msg.sender] += amount;
+        amountRaised += amount;
+        tokenReward.push(msg.sender, amount / price);
+        emit FundTransfer(msg.sender, amount, true);
     }
 
     modifier afterDeadline() { if (now >= deadline) _; }

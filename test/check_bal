@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+export DAPP_NO_SAVE=1
+export ETH_GAS=4000000
+export ETH_KEYSTORE=/home/aftnix/.dapp/testnet/8545/keystore/
+
+buyer=0x164133355b47b218dc003757f677b7656df2aa6c
+owner=0x59864bdFb37DCb506896A30f3E65d0FBC1DaFD1E
+token=0x2275e62220dc79dd46f47c5d1ae9cbe099f7d2fe
+sale=0x23f0c3be275a0aacf29b9db1fcf61ead914ec94f
+
+
+#set -x; seth call --from "$owner" "$token_sale" "owner()" "$token"
+#set -x; seth call --from "$owner" "$token" "owner()"
+#set -x; seth call --from "$owner" "$token_sale" "mint(uint256)" $(seth --to-uint256 500)
+#set -x; seth call --from "$owner" "$token" "balanceOf(address)" "$owner"
+#set -x; seth call --from "$owner" "$token" "balanceOf(address)" "$sale"
+set -x; seth call --from "$owner" "$token" "totalSupply()"

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+export DAPP_NO_SAVE=1
+export ETH_GAS=4000000
+export ETH_KEYSTORE=/home/aftnix/.dapp/testnet/8545/keystore/
+
+sale=0x5ef67cbfda92283c18859e95a593f8eebc777efd
+buyer=0x164133355b47b218dc003757f677b7656df2aa6c
+token=0xf70929ac827cfd4fffd34ce4256bda85e53a3a26
+
+(set -x; seth send --from "$buyer" "$sale" --value  $(seth --to-wei 1 eth) )
+
