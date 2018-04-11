@@ -3,9 +3,10 @@ set -e
 
 export DAPP_NO_SAVE=1
 export ETH_GAS=4000000
-export ETH_KEYSTORE=/home/aftnix/.dapp/testnet/8545/keystore/
-export ETH_FROM=0x26C35Ba70125853208AB463136F0D9AaF7a8e3A7
-export BENIFICIARY_KEY=0x40298bef6d91762787479c5f2ca162627bb8d528
+#export ETH_KEYSTORE=/home/aftnix/.dapp/testnet/8545/keystore/
+export export ETH_KEYSTORE=/home/aftnix/.ethereum/keystore
+export ETH_FROM=0x59e595f0fe941245d06e93927ba4d3f803757442
+export BENIFICIARY_KEY=0xd20ce8f59720cc50efacb04d05dc439610f51647
 token=$(set -x; dapp create DSToken \
   $(seth --to-bytes32 $(seth --from-ascii EKK))
 )

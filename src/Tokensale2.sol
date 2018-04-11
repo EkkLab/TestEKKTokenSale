@@ -20,6 +20,7 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
   bool crowdsaleClosed = false;
 
   event GoalReached(address recipient, uint totalAmountRaised);
+
   event FundTransfer(address backer, uint amount, bool isContribution);
 
   /**
@@ -48,7 +49,6 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
       assert(ekkToken.owner() == address(this));
       //assert(ekkToken.authority() == DSAuthority(0));
       assert(ekkToken.totalSupply() == 0);
-
       tokenReward = ekkToken;
       tokenReward.mint(totalSupply);
     }
