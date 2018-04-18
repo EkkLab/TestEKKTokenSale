@@ -23,6 +23,8 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
 
   event FundTransfer(address backer, uint amount, bool isContribution);
 
+  event ChangedTokenOwner(address newOwner);
+
   /**
   * Constructor function
   *
@@ -51,6 +53,15 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
       assert(ekkToken.totalSupply() == 0);
       tokenReward = ekkToken;
       tokenReward.mint(totalSupply);
+    }
+   /* to be called after sale closed and all funds are taken cared for(either
+   moved to benificiary or reverted) */
+
+    function resetTokenOwner(address _NewContract) auth {
+      require(!crowdsaleClosed);
+      require(address(this).balance == 0);
+      tokenReward.setOwner(_NewContract);
+      emit ChangedTokenOwner(_NewContract);
     }
 
     /**
