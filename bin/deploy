@@ -5,18 +5,20 @@ export DAPP_NO_SAVE=1
 export ETH_GAS=4000000
 #export ETH_KEYSTORE=/home/aftnix/.dapp/testnet/8545/keystore/
 # export export ETH_KEYSTORE=/home/aftnix/.ethereum/keystore
-export ETH_FROM=0x1c93c60741b94915d9c2d3f2969f198a0ed74ed7
-export BENIFICIARY_KEY=0x7dbfb73d09b925d78279deb42a696508d530abeb
+export ETH_FROM=0xaaf92bebeb64c1f8fadc04436f52a8b367009759
+export BENIFICIARY_KEY=0x431cd14d18bb48ca511e94005186d74b88604760
 token=$(set -x; dapp create DSToken \
   $(seth --to-bytes32 $(seth --from-ascii EKK))
 )
 
-sale=$(set -x; dapp create Tokensale2 $BENIFICIARY_KEY \
-     1000 \
+sale=$(set -x; dapp create EkkTokenSale $BENIFICIARY_KEY \
+     2500 \
      180 \
      $(seth --to-uint256 $(seth --to-wei 0.0005 eth)) \
      200 \
      100000000 \
+     30 \
+     20 \
  )
 
  (set -x; seth send "$token" "setOwner(address)" "$sale")

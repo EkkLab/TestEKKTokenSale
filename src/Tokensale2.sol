@@ -5,7 +5,7 @@ import "ds-math/math.sol";
 
 import "ds-token/token.sol";
 
-contract Tokensale2 is DSAuth, DSExec, DSMath {
+contract EkkTokenSale is DSAuth, DSExec, DSMath {
   address public beneficiary;
   uint public fundingGoal;
   uint public amountRaised;
@@ -14,6 +14,9 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
   DSToken public tokenReward;
   uint public bundleSize;
   uint256 public totalSupply;
+  uint     public  startTime;
+  uint public bonusRate1;
+  uint public bonusRate2;
 
   mapping(address => uint256) public balanceOf;
   bool fundingGoalReached = false;
@@ -30,13 +33,15 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
   *
   * Setup the owner
   */
-  function Tokensale2(
+  function EkkTokenSale(
     address ifSuccessfulSendTo,
     uint fundingGoalInEthers,
     uint durationInMinutes,
     uint256 CostOfEachToken,
     uint minimalBundleSize,
-    uint256 _totalSupply
+    uint256 _totalSupply,
+    uint _bonusRate1,
+    uint _bonusRate2
     ) public{
       beneficiary = ifSuccessfulSendTo;
       fundingGoal = fundingGoalInEthers * 1 ether;
@@ -44,6 +49,9 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
       price = CostOfEachToken;
       totalSupply = _totalSupply * 1 ether;
       bundleSize = minimalBundleSize;
+      startTime = now;
+      bonusRate1 = _bonusRate1;
+      bonusRate2 = _bonusRate2;
     }
 
     function initialize(DSToken ekkToken) auth {
@@ -72,10 +80,19 @@ contract Tokensale2 is DSAuth, DSExec, DSMath {
     function () payable public{
         require(!crowdsaleClosed);
         require((msg.value / price)  > bundleSize );
+        uint bonus = 0;
         uint amount = msg.value;
         balanceOf[msg.sender] += amount;
         amountRaised += amount;
-        tokenReward.push(msg.sender, amount / price);
+        if (msg.value > (200 ether)) {
+          if (now < startTime + 2 days ) {
+            bonus = (amount/price) * bonusRate1 * 0.01 ether;
+          }
+          else if ( now > startTime + 2 days) {
+            bonus = (amount/price) * bonusRate2 * 0.01 ether;
+          }
+        }
+        tokenReward.push(msg.sender, (amount / price) + bonus);
         emit FundTransfer(msg.sender, amount, true);
     }
 
