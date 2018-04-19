@@ -2,9 +2,9 @@ pragma solidity ^0.4.21;
 
 import "ds-test/test.sol";
 
-import "./Tokensale2.sol";
+import "./EkkTokenSale.sol";
 
-contract Tokensale2Test is DSTest {
+contract EkkTokenSale is DSTest {
     /* Tokensale2 tokensale;
 
     function setUp() public {

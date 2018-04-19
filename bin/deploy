@@ -17,8 +17,10 @@ sale=$(set -x; dapp create EkkTokenSale $BENIFICIARY_KEY \
      $(seth --to-uint256 $(seth --to-wei 0.0005 eth)) \
      200 \
      100000000 \
-     30 \
-     20 \
+     15 \
+     10 \
+     5 \
+     0 \
  )
 
  (set -x; seth send "$token" "setOwner(address)" "$sale")
