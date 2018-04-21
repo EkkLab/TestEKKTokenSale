@@ -111,7 +111,7 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
       totalReward = (amount/price) + bonus;
       tokenReward.push(msg.sender, totalReward);
       emit FundTransfer(msg.sender, totalReward, true);
-  }
+    }
 
 
     modifier afterDeadline() { if (now >= deadline) _; }
@@ -159,4 +159,14 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
             }
           }
         }
+      }
+      function freeze() auth{
+        assert(today() > numberOfDays + 1);
+        EKK.stop();
+        emit LogFreeze();
+      }
+      function unfreeze() auth{
+        assert(today() > numberOfDays + 1);
+        EKK.start();
+        emit LogFreeze();
       }
