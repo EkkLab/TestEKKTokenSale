@@ -4,7 +4,7 @@ import "ds-test/test.sol";
 
 import "./EkkTokenSale.sol";
 
-contract EkkTokenSale is DSTest {
+contract EkkTokenSaleTest is DSTest {
     /* Tokensale2 tokensale;
 
     function setUp() public {
