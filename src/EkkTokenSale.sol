@@ -18,7 +18,6 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
   uint public bonusRate1; //all bonus rates are for lower rung(<200) and has to be specified as whole numbers, like 30 represents 30 percent.
   uint public bonusRate2;
   uint public bonusRate3;
-  uint public bonusRate4;
 
   mapping(address => uint256) public balanceOf;
   bool fundingGoalReached = false;
@@ -29,6 +28,8 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
   event FundTransfer(address backer, uint amount, bool isContribution);
 
   event ChangedTokenOwner(address newOwner);
+  event LogFreeze();
+  event LogUnFreeze();
 
   /**
   * Constructor function
@@ -44,8 +45,7 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
     uint256 _totalSupply,
     uint _bonusRate1,
     uint _bonusRate2,
-    uint _bonusRate3,
-    uint _bonusRate4
+    uint _bonusRate3
     ) public{
       beneficiary = ifSuccessfulSendTo;
       fundingGoal = fundingGoalInEthers * 1 ether;
@@ -57,7 +57,6 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
       bonusRate1 = _bonusRate1;
       bonusRate2 = _bonusRate2;
       bonusRate3 = _bonusRate3;
-      bonusRate4 = _bonusRate4;
     }
 
     function initialize(DSToken ekkToken) auth {
@@ -103,9 +102,6 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
       }
       else if ((now > startTime + 7 days) && (now < startTime + 14 days)) {
         bonus = (amount/price) * bonusRate3 *bonusFactor* 0.01 ether;
-      }
-      else if ((now > startTime + 14 days)) {
-        bonus = (amount/price) * bonusRate4 *bonusFactor* 0.01 ether;
       }
 
       totalReward = (amount/price) + bonus;
@@ -160,13 +156,11 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
           }
         }
       }
-      /* function freeze() auth{
-        assert(today() > numberOfDays + 1);
+      function freeze() auth{
         EKK.stop();
         emit LogFreeze();
       }
       function unfreeze() auth{
-        assert(today() > numberOfDays + 1);
         EKK.start();
-        emit LogFreeze();
-      } */
+        emit LogUnFreeze();
+      }

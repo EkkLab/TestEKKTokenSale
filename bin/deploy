@@ -12,15 +12,15 @@ token=$(set -x; dapp create DSToken \
 )
 
 sale=$(set -x; dapp create EkkTokenSale $BENIFICIARY_KEY \
-     2500 \
-     180 \
-     $(seth --to-uint256 $(seth --to-wei 0.0005 eth)) \
-     200 \
-     100000000 \
+     2000 \
+     20160 \
+     $(seth --to-uint256 $(seth --to-wei 0.0001 eth)) \
+     1000 \
+     400000000 \
      15 \
      10 \
      5 \
-     0 \
+
  )
 
  (set -x; seth send "$token" "setOwner(address)" "$sale")
