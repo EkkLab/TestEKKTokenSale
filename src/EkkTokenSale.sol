@@ -155,12 +155,13 @@ contract EkkTokenSale is DSAuth, DSExec, DSMath {
             }
           }
         }
-      }
-      function freeze() auth{
-        EKK.stop();
-        emit LogFreeze();
-      }
-      function unfreeze() auth{
-        EKK.start();
-        emit LogUnFreeze();
+
+        function freeze() auth{
+          tokenReward.stop();
+          emit LogFreeze();
+        }
+        function unfreeze() auth{
+          tokenReward.start();
+          emit LogUnFreeze();
+        }
       }
